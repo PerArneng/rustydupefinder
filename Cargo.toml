@@ -7,3 +7,5 @@ authors = ["Per Arneng <per.arneng@scalebit.com>"]
 clap = "2.32.0"
 walkdir = "2.2.6"
 itertools = "0.7.8"
+digest = "0.8.0"
+sha2 = "0.8.0"

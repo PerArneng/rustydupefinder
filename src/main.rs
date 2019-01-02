@@ -1,6 +1,8 @@
 extern crate clap;
 extern crate walkdir;
 extern crate itertools;
+extern crate digest;
+extern crate sha2;
 
 use clap::{Arg, App};
 use std::fs;
@@ -8,6 +10,9 @@ use std::path::Path;
 use std::path::PathBuf;
 use std::io;
 use itertools::Itertools;
+
+
+mod hashing;
 
 // canonicalize returns a strange unc path on windows
 // see https://github.com/rust-lang/rust/issues/42869
@@ -51,7 +56,7 @@ fn main() -> std::io::Result<()> {
     println!("scanning path: '{}'", path.display());
 
     fn print_entry(entry:walkdir::DirEntry) {
-        println!("{} - {}", entry.file_name().to_str().unwrap(), entry.path().display());
+        //println!("{} - {}", entry.file_name().to_str().unwrap(), entry.path().display());
     }
 
     fn file_name_cmp(x1:&walkdir::DirEntry, x2:&walkdir::DirEntry) -> std::cmp::Ordering {

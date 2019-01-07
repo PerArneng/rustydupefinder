@@ -57,7 +57,7 @@ fn main() -> std::io::Result<()> {
 
     fn print_entry(entry:walkdir::DirEntry) {
         println!("{} - {} - {}", entry.file_name().to_str().unwrap(),
-                    entry.path().display(), hashing::create_hash(entry.path()).unwrap());
+                    entry.path().display(), hashing::path_hash(entry.path()).unwrap());
     }
 
     fn file_name_cmp(x1:&walkdir::DirEntry, x2:&walkdir::DirEntry) -> std::cmp::Ordering {

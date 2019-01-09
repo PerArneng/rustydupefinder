@@ -13,6 +13,7 @@ use itertools::Itertools;
 
 
 mod hashing;
+mod file_lister;
 
 // canonicalize returns a strange unc path on windows
 // see https://github.com/rust-lang/rust/issues/42869
@@ -55,6 +56,9 @@ fn main() -> std::io::Result<()> {
 
     println!("scanning path: '{}'", path.display());
 
+
+    let mut files = file_lister::list_files_recursively(path.as_path())?;
+
     fn print_entry(entry:walkdir::DirEntry) {
         println!("{} - {} - {}", entry.file_name().to_str().unwrap(),
                     entry.path().display(), hashing::path_hash(entry.path()).unwrap());
@@ -64,14 +68,8 @@ fn main() -> std::io::Result<()> {
         x1.file_name().cmp(&x2.file_name())
     }
 
-    let mut file_entries:Vec<walkdir::DirEntry> = Vec::new();
-    walkdir::WalkDir::new(path).into_iter()
-        .filter(|e| e.is_ok())
-        .for_each(
-            |x| file_entries.push(x.unwrap())
-        );
 
-    file_entries.sort_by(file_name_cmp);
+    files.sort_by(file_name_cmp);
 
     fn name_and_size(e:&walkdir::DirEntry) -> String {
         let len = e.metadata()
@@ -87,11 +85,11 @@ fn main() -> std::io::Result<()> {
 
     fn is_file(e:&walkdir::DirEntry) -> bool { e.file_type().is_file() }
 
-    file_entries
+    /*file_entries
         .into_iter()
         .filter(is_file)
         .unique_by(name_and_size)
         .for_each(print_entry);
-
+*/
     Ok(())
 }

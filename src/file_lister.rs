@@ -14,6 +14,7 @@ pub fn list_files_recursively<P>(dir:P) -> io::Result<Vec<PathBuf>>
     walkdir::WalkDir::new(dir).into_iter()
         .filter(|e| e.is_ok())
         .map(|x|x.unwrap().into_path())
+        .filter(|x| x.is_file())
         .for_each(
             |path_buf| file_entries.push(path_buf)
         );
